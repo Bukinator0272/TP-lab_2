@@ -6,7 +6,7 @@ import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-public class Expression {
+public class Statement {
 
     @JsonProperty("expression")
     private String expression;
@@ -14,7 +14,7 @@ public class Expression {
     @JsonProperty("answer")
     private double answer;
 
-    public Expression(String expression) {
+    public Statement(String expression) {
         this.expression = expression;
     }
 

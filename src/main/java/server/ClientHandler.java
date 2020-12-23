@@ -1,7 +1,7 @@
 package server;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import entity.Expression;
+import entity.Statement;
 import parser.Lexeme;
 import parser.LexemeBuffer;
 import parser.Parser;
@@ -25,15 +25,14 @@ public class ClientHandler extends Thread {
         while (true) {
             try {
                 String request = bufferedReader.readLine();
-                Expression expression = new ObjectMapper().readValue(request, Expression.class);
-                System.out.println("Server received expression: " + expression.getExpression());
+                Statement statement = new ObjectMapper().readValue(request, Statement.class);
 
-                Parser parser = new Parser(expression);
+                Parser parser = new Parser(statement);
                 List<Lexeme> lexemes = parser.lexAnalyze();
                 LexemeBuffer lexemeBuffer = new LexemeBuffer(lexemes);
-                expression.setAnswer(parser.solveExpression(lexemeBuffer));
+                statement.setAnswer(parser.solveExpression(lexemeBuffer));
 
-                String json = new ObjectMapper().writeValueAsString(expression);
+                String json = new ObjectMapper().writeValueAsString(statement);
                 bufferedWriter.write(json);
                 bufferedWriter.newLine();
                 bufferedWriter.flush();

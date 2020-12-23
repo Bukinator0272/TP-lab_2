@@ -1,7 +1,7 @@
 package client;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import entity.Expression;
+import entity.Statement;
 
 import java.io.*;
 import java.net.Socket;
@@ -20,16 +20,16 @@ public class Client {
                         new InputStreamReader(System.in));
 
                 System.out.println("Enter expression: ");
-                Expression expression = new Expression(inputReader.readLine());
+                Statement statement = new Statement(inputReader.readLine());
 
-                String json = new ObjectMapper().writeValueAsString(expression);
+                String json = new ObjectMapper().writeValueAsString(statement);
                 bufferedWriter.write(json);
                 bufferedWriter.newLine();
                 bufferedWriter.flush();
 
                 String response = bufferedReader.readLine();
-                expression = new ObjectMapper().readValue(response, Expression.class);
-                System.out.println("Answer: " + expression.getAnswer());
+                statement = new ObjectMapper().readValue(response, Statement.class);
+                System.out.println("Answer: " + statement.getAnswer());
             }
         } catch (IOException e) {
             e.printStackTrace();

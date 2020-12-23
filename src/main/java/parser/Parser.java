@@ -1,23 +1,23 @@
 package parser;
 
-import entity.Expression;
+import entity.Statement;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class Parser {
 
-    private final Expression expression;
+    private final Statement statement;
 
-    public Parser(Expression expression) {
-        this.expression = expression;
+    public Parser(Statement statement) {
+        this.statement = statement;
     }
 
     public List<Lexeme> lexAnalyze() {
         ArrayList<Lexeme> lexemes = new ArrayList<>();
         int pos = 0;
-        while (pos < expression.getExpression().length()) {
-            char c = expression.getExpression().charAt(pos);
+        while (pos < statement.getExpression().length()) {
+            char c = statement.getExpression().charAt(pos);
             switch (c) {
                 case '(':
                     lexemes.add(new Lexeme(LexemeType.LEFT_BRACKET, c));
@@ -49,10 +49,10 @@ public class Parser {
                         do {
                             stringBuilder.append(c);
                             pos++;
-                            if (pos >= expression.getExpression().length()) {
+                            if (pos >= statement.getExpression().length()) {
                                 break;
                             }
-                            c = expression.getExpression().charAt(pos);
+                            c = statement.getExpression().charAt(pos);
                         } while (c <= '9' && c >= '0');
                         lexemes.add(new Lexeme(LexemeType.NUMBER, stringBuilder.toString()));
                     } else {
@@ -71,8 +71,7 @@ public class Parser {
     public double solveExpression(LexemeBuffer lexemes) {
         Lexeme lexeme = lexemes.next();
         if (lexeme.getType() == LexemeType.EOF) {
-            System.out.println("Empty expression");
-            return 0;
+            throw new RuntimeException("Empty expression");
         } else {
             lexemes.back();
             return plusminus(lexemes);
